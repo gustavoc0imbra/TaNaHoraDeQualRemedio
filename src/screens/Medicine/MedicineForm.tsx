@@ -1,4 +1,4 @@
-import { Button, TextInput, TouchableOpacity, View } from "react-native";
+import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { GlobalStyles } from "../../assets/styles/global";
 import { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -13,13 +13,17 @@ export default function MedicineForm() {
     const [selectedHourIndex, setSelectedHourIndex] = useState<number | null>();
 
     const addHour = () => {
-        console.log("Adicionando hora");
         setHoursCounter((prev) => prev + 1);
-        console.log(hoursCounter);
+    }
+    
+    const removeHour = (index: number) => {
+        const hourSelected = hours[index];
+
+        setHours((prev) => prev.filter((hour) => hour !== hourSelected));
+        setHoursCounter((prev) => prev - 1);
     }
 
     const openTimePicker = (index: number) => {
-        console.log("Abrindo time picker do índice: " + index);
         setSelectedHourIndex(index);
 
         if(!hours[index]) {
@@ -39,7 +43,7 @@ export default function MedicineForm() {
             />
             <Button title="Adicionar horário" onPress={addHour} />
             {Array.from({ length: hoursCounter }).map((_, index) => (
-                <View key={index}>
+                <View style={{ flexDirection: "row", gap: 8 }} key={index}>
                     <TouchableOpacity onPress={() => openTimePicker(index)} key={index}>
                         <TextInput
                             style={[GlobalStyles.textField]}
@@ -48,6 +52,9 @@ export default function MedicineForm() {
                             readOnly
                             value={hours[index] ? hours[index].toLocaleTimeString("pt-BR") : ""}
                         />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ borderRadius: 50, backgroundColor: "#ff4d4dff", justifyContent: "center", alignItems: "center", padding: 12, width: 50 }} onPress={() => removeHour(index)}>
+                        <Text style={{ color: "#FFF", fontWeight: "bold" }}>X</Text>
                     </TouchableOpacity>
                 </View>
             ))}
