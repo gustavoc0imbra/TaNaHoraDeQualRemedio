@@ -2,6 +2,7 @@ import { Alert, Button, Text, TextInput, View } from "react-native";
 import { GlobalStyles } from "../assets/styles/global";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import React from "react";
 
 export default function Login() {
     const { login } = useContext(AuthContext);
