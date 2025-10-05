@@ -1,20 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authHttp, medicinesHttp } from "./api";
+import User from "../models/User";
 
 class AuthService {
     
-    public static async login(): Promise<true | false> {
+    public static async login(user: User): Promise<string | false> {
         try {
-            const response = await authHttp.post("/medicines");
-
-            return response.data;
+            const response = await authHttp.post("/login", user);
+            
+            return response.data.token;
         } catch (error) {
             console.error(error);
             return false;
         }
     }
-
-    private async save(token: string): Promise<void> {
-        await AsyncStorage.setItem("token", token);
-    }
 }
+
+export default AuthService;
