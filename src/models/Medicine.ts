@@ -5,7 +5,7 @@ class Medicine {
     name: string;
     dosage: number;
     hours: Date[];
-    observations: string[] | null;
+    observation: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 
@@ -14,13 +14,13 @@ class Medicine {
         name: string,
         dosage: number,
         hours: Date[],
-        observations: string[] | null,
+        observation: string | null,
     ) {
         this.id = id;
         this.name = name;
         this.dosage = dosage;
         this.hours = hours;
-        this.observations = observations;
+        this.observation = observation;
         this.createdAt = null;
         this.updatedAt = null;
     }

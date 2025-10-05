@@ -4,13 +4,29 @@ import { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import React from "react";
+import MedicineService from "../../services/medicinesService";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-export default function MedicineForm() {
+type RootStackParamList = {
+  home: undefined;
+  medicines: undefined;
+  medicineForm: undefined;
+};
+
+type MedicineFormScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'medicineForm'>;
+
+interface MedicineFormProps {
+  navigation: MedicineFormScreenNavigationProp;
+}
+
+export default function MedicineForm({ navigation }: MedicineFormProps) {
     const [name, setName] = useState<string>("");
+    const [dosage, setDosage] = useState<number>(0);
     const [hours, setHours] = useState<Date[]>([]);
     const [hoursCounter, setHoursCounter] = useState<number>(0);
     const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
     const [selectedHourIndex, setSelectedHourIndex] = useState<number | null>();
+    const [observation, setObservation] = useState<string | null>(null);
 
     const addHour = () => {
         setHoursCounter((prev) => prev + 1);
@@ -33,6 +49,15 @@ export default function MedicineForm() {
         }
 
         setShowTimePicker(true);
+    }
+
+    const saveMedicine = async () => {
+        await MedicineService.save({
+            name: name, dosage: dosage, hours: hours, observation: observation,
+            id: null,
+            createdAt: null,
+            updatedAt: null
+        });
     }
 
     return (
@@ -74,8 +99,8 @@ export default function MedicineForm() {
                 />
             )}
 
-            <Button title="Salvar" />
-            <Button color="tomato" title="Cancelar" />
+            <Button title="Salvar" onPress={saveMedicine} />
+            <Button color="tomato" title="Cancelar" onPress={() => navigation.goBack()} />
         </View>
     );
 }

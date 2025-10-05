@@ -53,3 +53,5 @@ class MedicineService {
         }
     }
 }
+
+export default MedicineService;
